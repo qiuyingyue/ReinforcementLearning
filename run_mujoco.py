@@ -35,7 +35,7 @@ def run_ant(rl_agent):
             step += 1
 
             if (step % 300 == 0):
-                print("reward", reward)
+                print("reward:",reward, "info:", info)
 
     # end 
     print('over')
