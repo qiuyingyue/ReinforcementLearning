@@ -12,6 +12,7 @@ def run_ant(rl_agent):
         observation = env.reset()
 
         while True:
+            
             # fresh env
             env.render()
             # RL choose action based on observation
@@ -32,6 +33,9 @@ def run_ant(rl_agent):
             if done:
                 break
             step += 1
+
+            if (step % 300 == 0):
+                print("reward", reward)
 
     # end 
     print('over')
