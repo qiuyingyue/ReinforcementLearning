@@ -7,6 +7,7 @@
 * for environment class _env_, we have
 
     * env.step(), env.reset(), env.render(), env.destroy(), env.action_space.sample()
+    * if we use built-in environment in gym such as mujoco, the interface is the same
 
 * for algorithm class _rl_agent_, we have
 
