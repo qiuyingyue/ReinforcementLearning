@@ -6,8 +6,8 @@
 
 * for environment class _env_, we have
 
-+ env.step(), env.reset(), env.render(), env.destroy(), env.action_space.sample()
+    * env.step(), env.reset(), env.render(), env.destroy(), env.action_space.sample()
 
 * for algorithm class _rl_agent_, we have
 
-+  rl_agent.choose_action(), rl_agent.store_transition()
+    *  rl_agent.choose_action(), rl_agent.store_transition()
