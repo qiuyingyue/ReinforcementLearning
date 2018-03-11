@@ -1,13 +1,8 @@
-
-
 import gym
 import sys
 sys.path.append("example")
 from DQN import DeepQNetwork
-from six_legged_env import SixLeggedEnv
-
-MAX_EPISODES = 200
-MAX_EP_STEPS = 200
+from two_legged_env import TwoLeggedEnv
 def run_ant(rl_agent):
     step = 0
     for episode in range(10):
@@ -19,16 +14,15 @@ def run_ant(rl_agent):
             # fresh env
             env.render()
             # RL choose action based on observation
-            #action = rl_agent.choose_action(observation)
-            action = env.action_space.sample()
+            action = rl_agent.choose_action(observation)
+
             # RL take action and get next observation and reward
             observation_, reward, done, info = env.step(action)
 
-            #rl_agent.store_transition(observation, action, reward, observation_)
+            rl_agent.store_transition(observation, action, reward, observation_)
 
             if (step > 200) and (step % 5 == 0):
-                #rl_agent.learn()
-                pass
+                rl_agent.learn()
 
             # swap observation
             observation = observation_
@@ -47,7 +41,7 @@ def run_ant(rl_agent):
 if __name__ == "__main__":
     ###get environment
     #env = gym.make('Ant-v2')##HalfCheetah, Ant, Humanoid
-    env = SixLeggedEnv()
+    env = TwoLeggedEnv()
     #env = myEnv() #self-defined enviornment
 
 
@@ -64,4 +58,3 @@ if __name__ == "__main__":
                       )
     #parse rl_agent to run the environment
     run_ant(rl_agent)
-    
