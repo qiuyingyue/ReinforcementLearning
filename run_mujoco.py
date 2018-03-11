@@ -6,7 +6,7 @@ sys.path.append("example")
 from DQN import DeepQNetwork
 def run_ant(rl_agent):
     step = 0
-    for episode in range(300):
+    for episode in range(1):
         # initial observation
         observation = env.reset()
 
@@ -34,8 +34,7 @@ def run_ant(rl_agent):
 
     # end 
     print('over')
-    env.destroy()
-
+    sys.exit()
 if __name__ == "__main__":
     ###get environment
     env = gym.make('Ant-v2')##HalfCheetah, Ant, Humanoid
