@@ -1,10 +1,8 @@
-
-
 import gym
 import sys
 sys.path.append("example")
 from DQN import DeepQNetwork
-from six_legged_env import SixLeggedEnv
+from two_legged_env import TwoLeggedEnv
 def run_ant(rl_agent):
     step = 0
     for episode in range(10):
@@ -43,7 +41,7 @@ def run_ant(rl_agent):
 if __name__ == "__main__":
     ###get environment
     #env = gym.make('Ant-v2')##HalfCheetah, Ant, Humanoid
-    env = SixLeggedEnv()
+    env = TwoLeggedEnv()
     #env = myEnv() #self-defined enviornment
 
 
@@ -60,4 +58,3 @@ if __name__ == "__main__":
                       )
     #parse rl_agent to run the environment
     run_ant(rl_agent)
-    
