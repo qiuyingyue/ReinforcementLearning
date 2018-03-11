@@ -13,3 +13,5 @@
 * for algorithm class _rl_agent_, we have
 
     * rl_agent.choose_action(), rl_agent.store_transition(), and so on 
+
+* There are some codes from online resources for reference in the directory of _example_
