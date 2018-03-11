@@ -2,7 +2,7 @@
 
 * each person write and maintain its own python file
 
-* we can add either algorithm class or environment class
+* we can add  algorithm class and environment class
 
 * for environment class _env_, we have
 
