@@ -6,7 +6,7 @@ sys.path.append("example")
 from DQN import DeepQNetwork
 def run_ant(rl_agent):
     step = 0
-    for episode in range(1):
+    for episode in range(10):
         # initial observation
         observation = env.reset()
 
@@ -42,9 +42,9 @@ if __name__ == "__main__":
 
 
     ###initialize rl_agent
-    observation = env.reset()
-    action = env.action_space.sample()
-    rl_agent = DeepQNetwork(len(action), len(observation),
+    state_dim = env.observation_space.shape[0]
+    action_dim = env.action_space.shape[0]
+    rl_agent = DeepQNetwork(action_dim, state_dim,
                       learning_rate=0.01,
                       reward_decay=0.9,
                       e_greedy=0.9,
