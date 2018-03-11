@@ -13,7 +13,7 @@ gym: 0.7.3
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-
+import util
 np.random.seed(1)
 tf.set_random_seed(1)
 
@@ -22,7 +22,7 @@ tf.set_random_seed(1)
 class DeepQNetwork:
     def __init__(
             self,
-            n_actions,
+            dim_actions, 
             n_features,
             learning_rate=0.01,
             reward_decay=0.9,
@@ -33,8 +33,9 @@ class DeepQNetwork:
             e_greedy_increment=None,
             output_graph=False,
     ):
-        self.n_actions = n_actions
-        self.n_features = n_features
+        self.n_actions = pow(3, dim_actions)#n_actions #number of possible actions
+        self.dim_actions = dim_actions #dimension of the actions
+        self.n_features = n_features #
         self.lr = learning_rate
         self.gamma = reward_decay
         self.epsilon_max = e_greedy
@@ -43,7 +44,7 @@ class DeepQNetwork:
         self.batch_size = batch_size
         self.epsilon_increment = e_greedy_increment
         self.epsilon = 0 if e_greedy_increment is not None else self.epsilon_max
-
+        self.actions_list = self.generate_actions(dim_actions, self.n_actions)
         # total learning step
         self.learn_step_counter = 0
 
@@ -66,6 +67,14 @@ class DeepQNetwork:
         self.sess.run(tf.global_variables_initializer())
         self.cost_his = []
 
+        print("number of actions:", self.n_actions)
+
+    #generate all possible actions
+    def generate_actions(self, dim_actions, n_actions):
+        action_choice = [0.2, 0, -0.2]
+        action_list = util.permutate([],[] , action_choice, dim_actions)
+        return action_list
+    
     def _build_net(self):
         # ------------------ build evaluate_net ------------------
         self.s = tf.placeholder(tf.float32, [None, self.n_features], name='s')  # input
@@ -130,12 +139,13 @@ class DeepQNetwork:
             # forward feed the observation and get q value for every actions
             actions_value = self.sess.run(self.q_eval, feed_dict={self.s: observation})
             action_idx = np.argmax(actions_value)
-            action = actions_dict[action_idx]
+            action = self.actions_list[action_idx]
         else:
-            #action = np.random.randint(0, self.n_actions)
-            action_idx = np.random.uniform(low=-1, high=1 , size=self.n_actions).astype(np.dtype)
-            action = actions_dict[action_idx]
-        return action
+            action_idx = np.random.randint(0, self.n_actions)
+            #action_idx = np.random.uniform(low=-1, high=1 , size=self.dim_actions).astype(np.dtype)
+            action = self.actions_list[action_idx]
+
+        return action, action_idx
 
     def learn(self):
         # check to replace target parameters
