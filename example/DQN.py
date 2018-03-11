@@ -114,7 +114,6 @@ class DeepQNetwork:
     def store_transition(self, s, a, r, s_):
         if not hasattr(self, 'memory_counter'):
             self.memory_counter = 0
-
         transition = np.hstack((s, [a, r], s_))
 
         # replace the old memory with new memory
@@ -130,9 +129,12 @@ class DeepQNetwork:
         if np.random.uniform() < self.epsilon:
             # forward feed the observation and get q value for every actions
             actions_value = self.sess.run(self.q_eval, feed_dict={self.s: observation})
-            action = np.argmax(actions_value)
+            action_idx = np.argmax(actions_value)
+            action = actions_dict[action_idx]
         else:
-            action = np.random.randint(0, self.n_actions)
+            #action = np.random.randint(0, self.n_actions)
+            action_idx = np.random.uniform(low=-1, high=1 , size=self.n_actions).astype(np.dtype)
+            action = actions_dict[action_idx]
         return action
 
     def learn(self):

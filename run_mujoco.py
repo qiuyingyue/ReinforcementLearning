@@ -5,6 +5,9 @@ import sys
 sys.path.append("example")
 from DQN import DeepQNetwork
 from six_legged_env import SixLeggedEnv
+
+MAX_EPISODES = 200
+MAX_EP_STEPS = 200
 def run_ant(rl_agent):
     step = 0
     for episode in range(10):
@@ -16,15 +19,16 @@ def run_ant(rl_agent):
             # fresh env
             env.render()
             # RL choose action based on observation
-            action = rl_agent.choose_action(observation)
-
+            #action = rl_agent.choose_action(observation)
+            action = env.action_space.sample()
             # RL take action and get next observation and reward
             observation_, reward, done, info = env.step(action)
 
-            rl_agent.store_transition(observation, action, reward, observation_)
+            #rl_agent.store_transition(observation, action, reward, observation_)
 
             if (step > 200) and (step % 5 == 0):
-                rl_agent.learn()
+                #rl_agent.learn()
+                pass
 
             # swap observation
             observation = observation_
