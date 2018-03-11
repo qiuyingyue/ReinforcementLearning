@@ -2,6 +2,8 @@
 
 import gym
 import sys
+sys.path.append("algs")
+sys.path.append("envs")
 from DQN import DeepQNetwork
 from six_legged_env import SixLeggedEnv
 import numpy as np
