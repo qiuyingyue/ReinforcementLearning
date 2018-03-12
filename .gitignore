@@ -9,5 +9,5 @@ ehthumbs.db
 Thumbs.db
 *.pyc
 *.npy
-
+logs
 __pycache__

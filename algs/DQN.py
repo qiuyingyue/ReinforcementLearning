@@ -3,17 +3,18 @@ This part of code is the DQN brain, which is a brain of the agent.
 All decisions are made in here.
 Using Tensorflow to build the neural network.
 
-View more on my tutorial page: https://morvanzhou.github.io/tutorials/
+Adapted from examples
 
 Using:
 Tensorflow: 1.0
-gym: 0.7.3
+gym: 1.5
 """
 
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-
+import util
+import os
 np.random.seed(1)
 tf.set_random_seed(1)
 
@@ -22,7 +23,7 @@ tf.set_random_seed(1)
 class DeepQNetwork:
     def __init__(
             self,
-            n_actions,
+            dim_actions, 
             n_features,
             learning_rate=0.01,
             reward_decay=0.9,
@@ -33,8 +34,9 @@ class DeepQNetwork:
             e_greedy_increment=None,
             output_graph=False,
     ):
-        self.n_actions = n_actions
-        self.n_features = n_features
+        self.n_actions = pow(3, dim_actions)#n_actions #number of possible actions
+        self.dim_actions = dim_actions #dimension of the actions
+        self.n_features = n_features #
         self.lr = learning_rate
         self.gamma = reward_decay
         self.epsilon_max = e_greedy
@@ -43,7 +45,7 @@ class DeepQNetwork:
         self.batch_size = batch_size
         self.epsilon_increment = e_greedy_increment
         self.epsilon = 0 if e_greedy_increment is not None else self.epsilon_max
-
+        self.actions_list = self.generate_actions(dim_actions, self.n_actions)
         # total learning step
         self.learn_step_counter = 0
 
@@ -65,7 +67,21 @@ class DeepQNetwork:
 
         self.sess.run(tf.global_variables_initializer())
         self.cost_his = []
+        self.saver =  tf.train.Saver()
+        self.restore_net()
 
+        print("number of actions:", self.n_actions)
+
+    #generate all possible actions
+    def generate_actions(self, dim_actions, n_actions):
+        if (dim_actions == 12):
+            action_choice = [0.3, 0, -0.3]
+            action_list = util.permutate([],[] , action_choice, dim_actions)
+        else:
+            action_choice = [0.1, 0, -0.1]
+            action_list = util.permutate([],[] , action_choice, dim_actions)
+        return action_list
+    
     def _build_net(self):
         # ------------------ build evaluate_net ------------------
         self.s = tf.placeholder(tf.float32, [None, self.n_features], name='s')  # input
@@ -130,18 +146,20 @@ class DeepQNetwork:
             # forward feed the observation and get q value for every actions
             actions_value = self.sess.run(self.q_eval, feed_dict={self.s: observation})
             action_idx = np.argmax(actions_value)
-            action = actions_dict[action_idx]
+            action = self.actions_list[action_idx]
         else:
-            #action = np.random.randint(0, self.n_actions)
-            action_idx = np.random.uniform(low=-1, high=1 , size=self.n_actions).astype(np.dtype)
-            action = actions_dict[action_idx]
-        return action
+            action_idx = np.random.randint(0, self.n_actions)
+            #action_idx = np.random.uniform(low=-1, high=1 , size=self.dim_actions).astype(np.dtype)
+            action = self.actions_list[action_idx]
 
+        return action, action_idx
+    
     def learn(self):
         # check to replace target parameters
         if self.learn_step_counter % self.replace_target_iter == 0:
             self.sess.run(self.replace_target_op)
             print('\ntarget_params_replaced\n')
+            self.save_net()
 
         # sample batch memory from all memory
         if self.memory_counter > self.memory_size:
@@ -166,32 +184,6 @@ class DeepQNetwork:
 
         q_target[batch_index, eval_act_index] = reward + self.gamma * np.max(q_next, axis=1)
 
-        """
-        For example in this batch I have 2 samples and 3 actions:
-        q_eval =
-        [[1, 2, 3],
-         [4, 5, 6]]
-
-        q_target = q_eval =
-        [[1, 2, 3],
-         [4, 5, 6]]
-
-        Then change q_target with the real q_target value w.r.t the q_eval's action.
-        For example in:
-            sample 0, I took action 0, and the max q_target value is -1;
-            sample 1, I took action 2, and the max q_target value is -2:
-        q_target =
-        [[-1, 2, 3],
-         [4, 5, -2]]
-
-        So the (q_target - q_eval) becomes:
-        [[(-1)-(1), 0, 0],
-         [0, 0, (-2)-(6)]]
-
-        We then backpropagate this error w.r.t the corresponding action to network,
-        leave other action as error=0 cause we didn't choose it.
-        """
-
         # train eval network
         _, self.cost = self.sess.run([self._train_op, self.loss],
                                      feed_dict={self.s: batch_memory[:, :self.n_features],
@@ -202,10 +194,27 @@ class DeepQNetwork:
         self.epsilon = self.epsilon + self.epsilon_increment if self.epsilon < self.epsilon_max else self.epsilon_max
         self.learn_step_counter += 1
 
+    def save_net(self):
+        save_path = "models/dqn_two_legged/model.ckpt"
+        if not (os.path.exists("models/dqn_two_legged")):
+            os.makedirs(save_path)
+        save_path = self.saver.save(self.sess, save_path)
+        print("model saved")
+        return save_path
+    def restore_net(self):
+        save_path = "models/dqn_two_legged_fix/model.ckpt"
+        try:
+            self.saver.restore(self.sess, save_path)
+            print("model restored")
+        except:
+            print("no exsiting model")
+            
+
     def plot_cost(self):
         import matplotlib.pyplot as plt
         plt.plot(np.arange(len(self.cost_his)), self.cost_his)
         plt.ylabel('Cost')
         plt.xlabel('training steps')
         plt.show()
+
 

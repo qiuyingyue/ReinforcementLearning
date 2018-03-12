@@ -7,7 +7,7 @@ class SixLeggedEnv(mujoco_env.MujocoEnv, utils.EzPickle):
     y = 0
     t = 0
     def __init__(self):
-        xml_path = os.path.split(os.path.realpath(__file__))[0]+"/xmls/six-legged.xml"
+        xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/six-legged.xml"
         mujoco_env.MujocoEnv.__init__(self, xml_path, 5)
         utils.EzPickle.__init__(self)
         self.x = 0
@@ -23,11 +23,11 @@ class SixLeggedEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         yposafter = self.get_body_com("torso")[1]
 
         #print ("xposafter", xposafter)
-        self.x  = self.x+(yposafter - yposbefore)
-        self.y = self.y+(xposafter - xposbefore)
+        self.x  = self.x+(xposafter - xposbefore)
+        self.y = self.y+(yposafter - yposbefore)
         self.t = self.t + self.dt
-        forward_reward = self.y/self.t 
-        forward_cost = self.x/self.t
+        forward_reward = self.x/self.t 
+        forward_cost = self.y/self.t
 
         ctrl_cost = .4 * np.square(a).sum()
         contact_cost = 0.5 * 1e-3 * np.sum(np.square(np.clip(self.sim.data.cfrc_ext, -1, 1)))

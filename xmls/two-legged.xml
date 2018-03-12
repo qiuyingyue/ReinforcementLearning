@@ -53,7 +53,9 @@
       <joint armature="0" axis="0 0 1" damping="0" limited="false" name="rootz" pos="0 0 0" stiffness="0" type="slide"/>
       <joint armature="0" axis="0 1 0" damping="0" limited="false" name="rooty" pos="0 0 0" stiffness="0" type="hinge"/>
       <geom fromto="-.5 0 0 .5 0 0" name="torso" size="0.046" type="capsule"/>
+      <body name="head" pos = "0 0 0">
       <geom axisangle="0 1 0 .87" name="head" pos=".6 0 .1" size="0.046 .15" type="capsule"/>
+      </body>
       <!-- <site name='tip'  pos='.15 0 .11'/>-->
       <body name="bthigh" pos="-.5 0 0">
         <joint axis="0 1 0" damping="6" name="bthigh" pos="0 0 0" range="-.52 1.05" stiffness="240" type="hinge"/>
