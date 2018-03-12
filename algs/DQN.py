@@ -14,6 +14,7 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 import util
+import os
 np.random.seed(1)
 tf.set_random_seed(1)
 
@@ -66,12 +67,14 @@ class DeepQNetwork:
 
         self.sess.run(tf.global_variables_initializer())
         self.cost_his = []
+        self.saver =  tf.train.Saver()
+        self.restore_net()
 
         print("number of actions:", self.n_actions)
 
     #generate all possible actions
     def generate_actions(self, dim_actions, n_actions):
-        action_choice = [0.2, 0, -0.2]
+        action_choice = [0.3, 0, -0.3]
         action_list = util.permutate([],[] , action_choice, dim_actions)
         return action_list
     
@@ -146,12 +149,13 @@ class DeepQNetwork:
             action = self.actions_list[action_idx]
 
         return action, action_idx
-
+    
     def learn(self):
         # check to replace target parameters
         if self.learn_step_counter % self.replace_target_iter == 0:
             self.sess.run(self.replace_target_op)
             print('\ntarget_params_replaced\n')
+            self.save_net()
 
         # sample batch memory from all memory
         if self.memory_counter > self.memory_size:
@@ -185,6 +189,22 @@ class DeepQNetwork:
         # increasing epsilon
         self.epsilon = self.epsilon + self.epsilon_increment if self.epsilon < self.epsilon_max else self.epsilon_max
         self.learn_step_counter += 1
+
+    def save_net(self):
+        save_path = "models/dqn_two_legged/model.ckpt"
+        if not (os.path.exists("models/dqn_two_legged")):
+            os.makedirs(save_path)
+        save_path = self.saver.save(self.sess, save_path)
+        print("model saved")
+        return save_path
+    def restore_net(self):
+        save_path = "models/dqn_two_legged_fix/model.ckpt"
+        try:
+            self.saver.restore(self.sess, save_path)
+            print("model restored")
+        except:
+            print("no exsiting model")
+            
 
     def plot_cost(self):
         import matplotlib.pyplot as plt
