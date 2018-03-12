@@ -12,12 +12,13 @@ class TwoLeggedEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         self.do_simulation(action, self.frame_skip)
         xposafter = self.sim.data.qpos[0]
         ob = self._get_obs()
-        reward_ctrl = - 0.5 * np.square(action).sum()
-        reward_run = (xposafter - xposbefore)/self.dt
+        reward_ctrl = - 0.1 * np.square(action).sum()
+        reward_run = 3 * (xposafter - xposbefore)/self.dt
         reward_contact = -0.5 * 1e-3 * np.sum(10 * np.square(self.sim.data.cfrc_ext[1]) + np.square(self.sim.data.cfrc_ext[-2]))
         reward = reward_ctrl + reward_run + reward_contact
+        #reward = reward_run + reward_contact
         done = False
-        return ob, reward, done, dict(reward_run=reward_run, reward_ctrl=reward_ctrl, reward_contact=reward_contact)
+        return ob, reward, done, dict(reward_run=reward_run, reward_contact=reward_contact, reward_ctrl=reward_ctrl)
 
     def _get_obs(self):
         return np.concatenate([

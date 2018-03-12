@@ -35,6 +35,9 @@ def run_ant(rl_agent):
 
             if (step % 300 == 0):
                 print("reward:",reward, "info:", info)
+            if (step % 2000 == 0):
+                rl_agent.save()
+                env.reset()
 
     # end 
     print('over')
@@ -60,5 +63,6 @@ if __name__ == "__main__":
                       )
     '''
     rl_agent = DDPG(action_dim, state_dim, a_bound = (-1, 1))
+    rl_agent.restore()
     #parse rl_agent to run the environment
     run_ant(rl_agent)

@@ -5,7 +5,7 @@ import numpy as np
 
 LR_A = 0.001    # learning rate for actor
 LR_C = 0.001    # learning rate for critic
-GAMMA = 0.5     # reward discount
+GAMMA = 0.9     # reward discount
 TAU = 0.01      # soft replacement
 MEMORY_CAPACITY = 10000
 BATCH_SIZE = 32
@@ -66,7 +66,6 @@ class DDPG(object):
         ba = bt[:, self.s_dim: self.s_dim + self.a_dim]
         br = bt[:, -self.s_dim - 1: -self.s_dim]
         bs_ = bt[:, -self.s_dim:]
-
         self.sess.run(self.atrain, {self.S: bs})
         self.sess.run(self.ctrain, {self.S: bs, self.a: ba, self.R: br, self.S_: bs_})
 
@@ -95,8 +94,8 @@ class DDPG(object):
 
     def save(self):
         saver = tf.train.Saver()
-        saver.save(self.sess, './params', write_meta_graph=False)
+        saver.save(self.sess, './model_DDPG/YT_model', write_meta_graph=False)
 
     def restore(self):
         saver = tf.train.Saver()
-        saver.restore(self.sess, './params')
+        saver.restore(self.sess, './model_DDPG/YT_model')
