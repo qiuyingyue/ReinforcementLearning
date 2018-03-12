@@ -10,7 +10,7 @@ from two_legged_env_dqn import TwoLeggedEnv
 import numpy as np
 MAX_EPISODES = 200
 MAX_EP_STEPS = 2000
-isTrain = False
+isTrain = True
 def run_ant(rl_agent):
     step = 0
     for episode in range(MAX_EPISODES):
@@ -27,7 +27,8 @@ def run_ant(rl_agent):
             #action = env.action_space.sample()
             
             # RL take action and get next observation and reward
-            observation_, reward, done, info = env.step(action)
+            if isTrain:
+                observation_, reward, done, info = env.step(action)
 
             rl_agent.store_transition(observation, action_idx, reward, observation_)
 
