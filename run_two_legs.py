@@ -1,7 +1,8 @@
 import gym
 import sys
 sys.path.append("example")
-from DQN import DeepQNetwork
+#from DQN import DeepQNetwork
+from DDPG import DDPG
 from two_legged_env import TwoLeggedEnv
 def run_ant(rl_agent):
     step = 0
@@ -48,7 +49,8 @@ if __name__ == "__main__":
     ###initialize rl_agent
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.shape[0]
-    rl_agent = DeepQNetwork(action_dim, state_dim,
+
+    '''rl_agent = DeepQNetwork(action_dim, state_dim,
                       learning_rate=0.01,
                       reward_decay=0.9,
                       e_greedy=0.9,
@@ -56,5 +58,7 @@ if __name__ == "__main__":
                       memory_size=2000,
                       # output_graph=True
                       )
+    '''
+    rl_agent = DDPG(action_dim, state_dim, a_bound = (-1, 1))
     #parse rl_agent to run the environment
     run_ant(rl_agent)
