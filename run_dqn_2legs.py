@@ -10,7 +10,7 @@ from two_legged_env_dqn import TwoLeggedEnv
 import numpy as np
 MAX_EPISODES = 200
 MAX_EP_STEPS = 2000
-isTrain = True
+isTrain = False
 def run_ant(rl_agent):
     step = 0
     for episode in range(MAX_EPISODES):
@@ -27,10 +27,10 @@ def run_ant(rl_agent):
             #action = env.action_space.sample()
             
             # RL take action and get next observation and reward
+            
+            observation_, reward, done, info = env.step(action)
             if isTrain:
-                observation_, reward, done, info = env.step(action)
-
-            rl_agent.store_transition(observation, action_idx, reward, observation_)
+                rl_agent.store_transition(observation, action_idx, reward, observation_)
 
             if isTrain and (step > 200) and (step % 5 == 0):
                 rl_agent.learn()
@@ -60,7 +60,11 @@ if __name__ == "__main__":
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.shape[0]
     print(action_dim)
-    rl_agent = DeepQNetwork( action_dim, state_dim,
+    if (isTrain):
+        model_path = "models/dqn_two_legged"
+    else:
+        model_path = "models/dqn_two_legged_final"
+    rl_agent = DeepQNetwork(model_path, action_dim, state_dim,
                       learning_rate=0.01,
                       reward_decay=0.9,
                       e_greedy=0.9,
