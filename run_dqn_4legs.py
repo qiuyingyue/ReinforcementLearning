@@ -5,8 +5,7 @@ import sys
 sys.path.append("algs")
 sys.path.append("envs")
 from DQN import DeepQNetwork
-from six_legged_env import SixLeggedEnv
-from two_legged_env_dqn import TwoLeggedEnv
+from four_legged_env_dqn import FourLeggedEnv
 import numpy as np
 MAX_EPISODES = 200
 MAX_EP_STEPS = 2000
@@ -51,10 +50,8 @@ def run_ant(rl_agent):
 if __name__ == "__main__":
     ###get environment
     #env = gym.make('HalfCheetah-v2')##HalfCheetah, Ant, Humanoid
-    env = TwoLeggedEnv()#SixLeggedEnv()
-    #env = myEnv() #self-defined enviornment
-
-
+    env = FourLeggedEnv()#SixLeggedEnv()
+    
     ###initialize rl_agent
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.shape[0]

@@ -74,8 +74,12 @@ class DeepQNetwork:
 
     #generate all possible actions
     def generate_actions(self, dim_actions, n_actions):
-        action_choice = [0.3, 0, -0.3]
-        action_list = util.permutate([],[] , action_choice, dim_actions)
+        if (dim_actions == 12):
+            action_choice = [0.3, 0, -0.3]
+            action_list = util.permutate([],[] , action_choice, dim_actions)
+        else:
+            action_choice = [0.1, 0, -0.1]
+            action_list = util.permutate([],[] , action_choice, dim_actions)
         return action_list
     
     def _build_net(self):
