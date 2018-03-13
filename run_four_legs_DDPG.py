@@ -4,8 +4,8 @@ sys.path.append("algs")
 sys.path.append("envs")
 #from DQN import DeepQNetwork
 from DDPG import DDPG
-from two_legged_env_DDPG import TwoLeggedEnv
-def run_two_leg(rl_agent):
+from four_legged_env_DDPG import FourLeggedEnv
+def run_four_leg(rl_agent):
     step = 0
     for episode in range(10):
         # initial observation
@@ -30,15 +30,14 @@ def run_two_leg(rl_agent):
             observation = observation_
 
             # break while loop when end of this episode
-            if done:
-                break
+            if done or step % 5000 == 0:
+                env.reset()
             step += 1
 
             if (step % 300 == 0):
                 print("reward:",reward, "info:", info)
-            if (step % 1000 == 0):
+            if (step % 2000 == 0):
                 rl_agent.save()
-                env.reset()
 
     # end 
     print('over')
@@ -46,7 +45,7 @@ def run_two_leg(rl_agent):
 if __name__ == "__main__":
     ###get environment
     #env = gym.make('Ant-v2')##HalfCheetah, Ant, Humanoid
-    env = TwoLeggedEnv()
+    env = FourLeggedEnv()
     #env = myEnv() #self-defined enviornment
 
 
@@ -66,4 +65,4 @@ if __name__ == "__main__":
     rl_agent = DDPG(action_dim, state_dim, a_bound = (-1, 1))
     rl_agent.restore()
     #parse rl_agent to run the environment
-    run_two_leg(rl_agent)
+    run_four_leg(rl_agent)
