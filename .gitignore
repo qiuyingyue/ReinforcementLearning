@@ -11,3 +11,5 @@ Thumbs.db
 *.npy
 logs
 __pycache__
+models
+model_DDPG

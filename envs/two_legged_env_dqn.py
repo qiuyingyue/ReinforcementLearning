@@ -20,11 +20,11 @@ class TwoLeggedEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         #print("head",pos_head)
         contact_top = self.sim.data.cfrc_ext[1] + self.sim.data.cfrc_ext[2]
         cost_contact =  np.square(np.clip(contact_top, -1, 1)).mean()
-        cost_jump = body_height - 0.8 if body_height > 0.8 else 0#incase it jumps too high
+        cost_jump = body_height - 0.85 if body_height > 0.85 else 0#incase it jumps too high
         ob = self._get_obs()
         reward_ctrl = - 0.1 * np.square(action).sum()#0.1
         reward_run = (xposafter - xposbefore)/self.dt
-        reward = reward_ctrl + reward_run - cost_contact - cost_jump
+        reward = reward_ctrl + reward_run - cost_contact #- cost_jump
         if (body_height < 0.3):
             done = True
         else:

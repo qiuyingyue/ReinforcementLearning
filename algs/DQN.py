@@ -23,6 +23,7 @@ tf.set_random_seed(1)
 class DeepQNetwork:
     def __init__(
             self,
+            model_name,
             dim_actions, 
             n_features,
             learning_rate=0.01,
@@ -34,6 +35,7 @@ class DeepQNetwork:
             e_greedy_increment=None,
             output_graph=False,
     ):
+        self.model_name = model_name
         self.n_actions = pow(3, dim_actions)#n_actions #number of possible actions
         self.dim_actions = dim_actions #dimension of the actions
         self.n_features = n_features #
@@ -74,11 +76,11 @@ class DeepQNetwork:
 
     #generate all possible actions
     def generate_actions(self, dim_actions, n_actions):
-        if (dim_actions == 12):
+        if (dim_actions == 6):
             action_choice = [0.3, 0, -0.3]
             action_list = util.permutate([],[] , action_choice, dim_actions)
         else:
-            action_choice = [0.1, 0, -0.1]
+            action_choice = [0.5,  -0.5]
             action_list = util.permutate([],[] , action_choice, dim_actions)
         return action_list
     
@@ -195,17 +197,19 @@ class DeepQNetwork:
         self.learn_step_counter += 1
 
     def save_net(self):
-        save_path = "models/dqn_two_legged/model.ckpt"
-        if not (os.path.exists("models/dqn_two_legged")):
+        print(self.model_name)
+        save_path = self.model_name + "/model.ckpt"
+        if not (os.path.exists(self.model_name)):
             os.makedirs(save_path)
         save_path = self.saver.save(self.sess, save_path)
         print("model saved")
         return save_path
     def restore_net(self):
-        save_path = "models/dqn_two_legged_fix/model.ckpt"
+        print(self.model_name)
+        save_path = self.model_name + "/model.ckpt"
         try:
             self.saver.restore(self.sess, save_path)
-            print("model restored")
+            print("model restored from", save_path)
         except:
             print("no exsiting model")
             
