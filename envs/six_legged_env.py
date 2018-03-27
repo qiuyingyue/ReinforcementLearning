@@ -7,7 +7,13 @@ class SixLeggedEnv(mujoco_env.MujocoEnv, utils.EzPickle):
     y = 0
     t = 0
     def __init__(self):
-        xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/six-legged.xml"
+        #Pick one of the following 3 models:
+        #Choose one of the following: first->simple hexapod, second->15dof hexapod, third->full hexapod
+        #xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/six-legged.xml"
+        xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/six-legged_15dof.xml"
+
+
+        #xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/Silvia.xml"
         mujoco_env.MujocoEnv.__init__(self, xml_path, 5)
         utils.EzPickle.__init__(self)
         self.x = 0
