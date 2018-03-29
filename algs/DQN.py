@@ -48,6 +48,7 @@ class DeepQNetwork:
         self.epsilon_increment = e_greedy_increment
         self.epsilon = 0 if e_greedy_increment is not None else self.epsilon_max
         self.actions_list = self.generate_actions(dim_actions, self.n_actions)
+        #print (len(self.actions_list))
         # total learning step
         self.learn_step_counter = 0
 
@@ -80,7 +81,7 @@ class DeepQNetwork:
             action_choice = [0.3, 0, -0.3]
             action_list = util.permutate([],[] , action_choice, dim_actions)
         else:
-            action_choice = [0.5,  -0.5]
+            action_choice = [0.5,0,  -0.5]
             action_list = util.permutate([],[] , action_choice, dim_actions)
         return action_list
     
