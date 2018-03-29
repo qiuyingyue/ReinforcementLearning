@@ -24,8 +24,8 @@ def run_ant(rl_agent):
             if (not isTrain) or episode >= MAX_EPISODES - 10:
                 env.render()
             # RL choose action based on observation
-            #action, action_idx = rl_agent.choose_action(observation)
-            action = env.action_space.sample()
+            action, action_idx = rl_agent.choose_action(observation)
+            #action = env.action_space.sample()
             #print(action)
             # RL take action and get next observation and reward
             observation_, reward, done, info = env.step(action)
@@ -59,7 +59,11 @@ if __name__ == "__main__":
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.shape[0]
     print(action_dim)
-    rl_agent = DeepQNetwork("models/dqn_four_legged", action_dim, state_dim,
+    if (isTrain):
+        model_path = "models/dqn_four_legged"
+    else:
+        model_path = "models/dqn_four_legged"
+    rl_agent = DeepQNetwork(model_path, action_dim, state_dim,
                       learning_rate=0.01,
                       reward_decay=0.9,
                       e_greedy=0.7,
