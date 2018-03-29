@@ -2,18 +2,19 @@ import numpy as np
 from gym import utils
 from gym.envs.mujoco import mujoco_env
 import sys, os
+#This file is doing the same thing as gym.make does
 class SixLeggedEnv(mujoco_env.MujocoEnv, utils.EzPickle):
     x = 0
     y = 0
     t = 0
     def __init__(self):
-        #Pick one of the following 3 models:
+
         #Choose one of the following: first->simple hexapod, second->15dof hexapod, third->full hexapod
         #xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/six-legged.xml"
         xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/six-legged_15dof.xml"
-
-
         #xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/Silvia.xml"
+
+
         mujoco_env.MujocoEnv.__init__(self, xml_path, 5)
         utils.EzPickle.__init__(self)
         self.x = 0

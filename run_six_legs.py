@@ -1,5 +1,3 @@
-
-
 import gym
 import sys
 sys.path.append("algs")
@@ -68,5 +66,4 @@ if __name__ == "__main__":
                       output_graph=True
                       )
     #parse rl_agent to run the environment
-    run_ant(rl_agent)
-
+run_ant(rl_agent)
