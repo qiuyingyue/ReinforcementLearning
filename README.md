@@ -1,17 +1,10 @@
 # ReinforcementLearning
 
-* each person write and maintain its own python file
+* Dependency: tensorflow 1.6, mujoco 1.5, gym
+* run test:
+    * python run_dqn_2legs.py
+    * python run_dqn_4legs.py
+    * python run_two_legs_DDPG.py
+    * python run_four_legs_DDPG.py
+    * Python run_six_legs_DDPG.py
 
-* we can add  algorithm class and environment class and try different ones
-
-* for environment class _env_, we have
-
-    * if we use built-in environment in gym such as mujoco, the interface is like the follows:
-    * env.step(), env.reset(), env.render()
-    * if we write our own environment, please maintain the same interface 
-
-* for algorithm class _rl_agent_, we have
-
-    * rl_agent.choose_action(), rl_agent.store_transition(), and so on 
-
-* There are some codes from online resources for reference in the directory of _example_
