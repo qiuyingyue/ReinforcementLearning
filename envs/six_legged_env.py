@@ -11,9 +11,9 @@ class SixLeggedEnv(mujoco_env.MujocoEnv, utils.EzPickle):
 
         #Choose one of the following: first->simple hexapod, second->15dof hexapod, third->full hexapod
         #xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/six-legged.xml"
-        xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/six-legged_15dof.xml"
+        #xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/six-legged_15dof.xml"
         #xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/Silvia.xml"
-
+        xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/simple_Silvia.xml"
 
         mujoco_env.MujocoEnv.__init__(self, xml_path, 5)
         utils.EzPickle.__init__(self)
@@ -58,6 +58,16 @@ class SixLeggedEnv(mujoco_env.MujocoEnv, utils.EzPickle):
             self.sim.data.qvel.flat,
             np.clip(self.sim.data.cfrc_ext, -1, 1).flat,
         ])
+    
+    def get_actuator_pos(self):
+        #Get mjModel by sim.model, mjData by sim.data
+        return self.sim.data.qpos.flat
+
+    def get_actuator_pos0(self):
+        return self.sim.model.qpos0.flat
+
+    def get_actuator_pos(self):
+        return self.sim.data.qpos.flat
 
     def reset_model(self):
         qpos = self.init_qpos + self.np_random.uniform(size=self.model.nq, low=-.1, high=.1)

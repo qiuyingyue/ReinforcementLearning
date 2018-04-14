@@ -1,0 +1,12 @@
+Tue Apr  3 15:13:07 2018
+ERROR: GLEW initalization error: Missing GL version
+
+Tue Apr  3 15:14:00 2018
+ERROR: GLEW initalization error: Missing GL version
+
+Tue Apr  3 15:16:41 2018
+ERROR: GLEW initalization error: Missing GL version
+
+Thu Apr 12 00:38:56 2018
+ERROR: Expired activation key
+

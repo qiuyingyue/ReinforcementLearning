@@ -58,8 +58,8 @@ class DynamicPlot():
         plt.close(self.figure)
 
 MAX_EPISODES = 200
-MAX_EP_STEPS = 200
-isTrain = True
+MAX_EP_STEPS = 500
+isTrain = False
 def run_ant(rl_agent):
     step = 0
     d = DynamicPlot()
@@ -93,13 +93,14 @@ def run_ant(rl_agent):
 
             # break while loop when end of this episode
             if done:
-                d.close()
-                d.__init__()
                 break
             step += 1
             #print(info)
             if (step % 300 == 0):
                 print("reward:",reward, "info:", info)
+
+        d.close()
+        d.__init__()
 
     # end 
     print('over')

@@ -3,7 +3,7 @@ import sys
 sys.path.append("algs")
 sys.path.append("envs")
 #from DQN import DeepQNetwork
-from DDPG import DDPG
+from DDPG_four_legged import DDPG
 from four_legged_env_DDPG import FourLeggedEnv
 def run_four_leg(rl_agent):
     step = 0

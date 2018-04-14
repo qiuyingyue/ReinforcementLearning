@@ -1,21 +1,21 @@
-<!-- This is 15dof version of Silvia, as much as mujoco can support -->
+<!-- This is complete 18dof Silvia model, but current mojoco-py doesn't load more than 15dof so it is not working yet-->
+<mujoco model="six-legged">
+    <compiler angle="radian" coordinate="local" inertiafromgeom="true" meshdir="../meshes/"/>
 
-<mujoco model="Silvia_full">
-  <compiler angle="degree" coordinate="local" inertiafromgeom="true" meshdir="../meshes/"/>
-  <option integrator="RK4" timestep="0.01"/>
+    <size njmax="500" nconmax="100"/>
 
-  <size njmax="500" nconmax="100" />
+    <option integrator="RK4" timestep="0.01"/>
 
-  <!--custom>
-    <numeric data="0.0 0.0 0.55 1.0 0.0 0.0 0.0 0.0 1.0 0.0 -1.0 0.0 -1.0 0.0 1.0" name="init_qpos"/>
-  </custom-->
+    <!--custom>
+        <numeric data="0.0 0.0 0.55 1.0 0.0 0.0 0.0 0.0 1.0 0.0 -1.0 0.0 -1.0 0.0 1.0 1.0 1.0 1.0" name="init_qpos"/>
+    </custom-->
 
-  <default>
-    <joint armature="1" damping="1" limited="true"/>
-    <geom conaffinity="0" condim="3" density="5.0" friction="1 0.5 0.5" margin="0.01" rgba="0.8 0.6 0.4 1"/>
-  </default>
+    <default>
+        <joint armature="1" damping="1" limited="true"/>
+        <geom conaffinity="0" condim="3" density="5.0" friction="1 0.5 0.5" margin="0.01" rgba="0.8 0.6 0.4 1"/>
+    </default>
 
-  <asset>
+    <asset>
         <texture builtin="gradient" height="100" rgb1="1 1 1" rgb2="0 0 0" type="skybox" width="100"/>
         <texture builtin="flat" height="1278" mark="cross" markrgb="1 1 1" name="texgeom" random="0.01" rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" type="cube" width="127"/>
         <texture builtin="checker" height="100" name="texplane" rgb1="0 0 0" rgb2="0.8 0.8 0.8" type="2d" width="100"/>
@@ -42,17 +42,17 @@
         <mesh name="LF_Tibia" file="LF_Tibia.STL" />
     </asset>
 
-  <worldbody>
-    <light cutoff="100" diffuse="1 1 1" dir="-0 0 -1.3" directional="true" exponent="1" pos="0 0 1.3" specular=".1 .1 .1"/>
-    <geom conaffinity="1" condim="3" material="MatPlane" name="floor" pos="0 0 0" rgba="0.8 0.9 0.8 1" size="40 40 40" type="plane"/>
+    <worldbody>
+        <light cutoff="100" diffuse="1 1 1" dir="-0 0 -1.3" directional="true" exponent="1" pos="0 0 1.3" specular=".1 .1 .1"/>
+        <geom conaffinity="1" condim="3" material="MatPlane" name="floor" pos="0 0 0" rgba="0.8 0.9 0.8 1" size="40 40 40" type="plane"/>
 
-    <body name="torso" pos="0 0 0.75">
-      <camera name="track" mode="trackcom" pos="0 -3 0.3" xyaxes="1 0 0 0 0 1"/>
-      <inertial pos="-1.04106e-10 -0.000333377 -0.0356225" quat="-4.96459e-05 0.707107 -6.11763e-05 0.707107" mass="1.94003" diaginertia="0.0628118 0.0329645 0.032962" />
-      <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="torso" />
-      <joint armature="0" damping="0" limited="false" margin="0.01" name="root" pos="0 0 0" type="free"/>
+        <body name="torso" pos="0 0 0">
+            <camera name="track" mode="trackcom" pos="0 -3 0.3" xyaxes="1 0 0 0 0 1"/>
+            <inertial pos="-1.04106e-10 -0.000333377 -0.0356225" quat="-4.96459e-05 0.707107 -6.11763e-05 0.707107" mass="1.94003" diaginertia="0.0628118 0.0329645 0.032962" />
+            <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="torso" />
+            <joint armature="0" damping="0" limited="false" margin="0.01" name="root" pos="0 0 0" type="free"/>
 
-      <body name="RF_Coxa" pos="0.1104 0.19121 -0.0411" quat="0.866025 0 0 0.500001">
+            <body name="RF_Coxa" pos="0.1104 0.19121 -0.0411" quat="0.866025 0 0 0.500001">
                 <inertial pos="0.0285 1.4128e-09 -6.5463e-10" quat="0.92388 0.382683 0 0" mass="0.06196" diaginertia="8.8248e-05 6.265e-05 6.265e-05" />
                 <joint name="RF_Coxa" pos="0 0 0" axis="0 0 1" range="-30 30" type="hinge"/>
                 <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="RF_Coxa" />
@@ -68,7 +68,7 @@
                 </body>
             </body>
 
-      <body name="RM_Coxa" pos="0.22114 -0.00020415 -0.0411">
+            <body name="RM_Coxa" pos="0.22114 -0.00020415 -0.0411">
                 <inertial pos="0.0285 7.2808e-10 -7.2811e-10" quat="0.92388 0.382683 0 0" mass="0.06196" diaginertia="8.8248e-05 6.265e-05 6.265e-05" />
                 <joint name="RM_Coxa" pos="0 0 0" axis="0 0 1" range="-30 30" type="hinge"/>
                 <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="RM_Coxa" />
@@ -82,9 +82,9 @@
                         <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="RM_Tibia" />
                     </body>
                 </body>
-      </body>
+            </body>
 
-      <body name="RR_Coxa" pos="0.110741 -0.191814 -0.0411" quat="0.866025 0 0 -0.5">
+            <body name="RR_Coxa" pos="0.110741 -0.191814 -0.0411" quat="0.866025 0 0 -0.5">
                 <inertial pos="0.0285 1.4744e-09 -6.1533e-10" quat="0.92388 0.382683 0 0" mass="0.06196" diaginertia="8.8248e-05 6.265e-05 6.265e-05" />
                 <joint name="RR_Coxa" pos="0 0 0" axis="0 0 1" range="-30 30" type="hinge"/>
                 <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="RR_Coxa" />
@@ -98,9 +98,9 @@
                         <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="RR_Tibia" />
                     </body>
                 </body>
-      </body>
+            </body>
 
-      <body name="LR_Coxa" pos="-0.110395 -0.192014 -0.0411" quat="0.5 0 0 -0.866025">
+            <body name="LR_Coxa" pos="-0.110395 -0.192014 -0.0411" quat="0.5 0 0 -0.866025">
                 <inertial pos="0.0285 1.4127e-09 -6.5462e-10" quat="0.92388 0.382683 0 0" mass="0.06196" diaginertia="8.8248e-05 6.265e-05 6.265e-05" />
                 <joint name="LR_Coxa" pos="0 0 0" axis="0 0 1" range="-30 30" type="hinge"/>
                 <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="LR_Coxa" />
@@ -114,9 +114,9 @@
                         <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="LR_Tibia" />
                     </body>
                 </body>
-      </body>
+            </body>
 
-      <body name="LM_Coxa" pos="-0.221137 -0.000604145 -0.0411" quat="0 0 0 -1">
+            <body name="LM_Coxa" pos="-0.221137 -0.000604145 -0.0411" quat="0 0 0 -1">
                 <inertial pos="0.0285 7.2807e-10 -7.2807e-10" quat="0.92388 0.382683 0 0" mass="0.06196" diaginertia="8.8248e-05 6.265e-05 6.265e-05" />
                 <joint name="LM_Coxa" pos="0 0 0" axis="0 0 1" range="-30 30" type="hinge"/>
                 <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="LM_Coxa" />
@@ -130,9 +130,9 @@
                         <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="LM_Tibia" />
                     </body>
                 </body>
-      </body>
+            </body>
 
-      <body name="LF_Coxa" pos="-0.110741 0.191006 -0.0411" quat="0.5 0 0 0.866025">
+            <body name="LF_Coxa" pos="-0.110741 0.191006 -0.0411" quat="0.5 0 0 0.866025">
                 <inertial pos="0.0285 1.4744e-09 -6.1536e-10" quat="0.92388 0.382683 0 0" mass="0.06196" diaginertia="8.8248e-05 6.265e-05 6.265e-05" />
                 <joint name="LF_Coxa" pos="0 0 0" axis="0 0 1" range="-30 30" type="hinge"/>
                 <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="LF_Coxa" />
@@ -146,29 +146,29 @@
                         <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="LF_Tibia" />
                     </body>
                 </body>
-      </body>
+            </body>
 
-    </body>
+        </body>
+    </worldbody>
 
-  </worldbody>
-  <actuator>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RF_Coxa" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RF_Femur" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RF_Tibia" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RM_Coxa" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RM_Femur" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RM_Tibia" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RR_Coxa" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RR_Femur" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RR_Tibia" gear="150"/>    
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LR_Coxa" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LR_Femur" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LR_Tibia" gear="150"/>    
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LM_Coxa" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LM_Femur" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LM_Tibia" gear="150"/>    
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LF_Coxa" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LF_Femur" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LF_Tibia" gear="150"/>
-  </actuator>
+    <actuator>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RF_Coxa" gear="150"/>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RF_Femur" gear="150"/>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RF_Tibia" gear="150"/>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RM_Coxa" gear="150"/>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RM_Femur" gear="150"/>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RM_Tibia" gear="150"/>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RR_Coxa" gear="150"/>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RR_Femur" gear="150"/>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RR_Tibia" gear="150"/>    
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LR_Coxa" gear="150"/>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LR_Femur" gear="150"/>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LR_Tibia" gear="150"/>    
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LM_Coxa" gear="150"/>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LM_Femur" gear="150"/>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LM_Tibia" gear="150"/>    
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LF_Coxa" gear="150"/>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LF_Femur" gear="150"/>
+      <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LF_Tibia" gear="150"/>  
+    </actuator> 
 </mujoco>
