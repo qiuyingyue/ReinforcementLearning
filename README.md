@@ -1,17 +1,27 @@
 # ReinforcementLearning
 
-* each person write and maintain its own python file
+## Introduction:
+The project ReinforcementLearning trains multilegged robot to learn walking. Two-legged, Four-legged, and Six-legged are able to walk.
 
-* we can add  algorithm class and environment class and try different ones
+## Algorithm:
+   - 2 Reinforcement Learning algorithms:
+      - DQN (Deep Q-Network)
+      - DDPG (Deep Deterministic Policy Gradients)
+   
+## Language:
+   - python 
+   
+## Framework:
+   - Tensorflow
 
-* for environment class _env_, we have
+## Dependency: 
+   - tensorflow 1.6
+   - mujoco 1.5, gym
+   
+## Run Test:
+   - python run_dqn_2legs.py
+   - python run_dqn_4legs.py
+   - python run_two_legs_DDPG.py
+   - python run_four_legs_DDPG.py
+   - Python run_six_legs_DDPG.py
 
-    * if we use built-in environment in gym such as mujoco, the interface is like the follows:
-    * env.step(), env.reset(), env.render()
-    * if we write our own environment, please maintain the same interface 
-
-* for algorithm class _rl_agent_, we have
-
-    * rl_agent.choose_action(), rl_agent.store_transition(), and so on 
-
-* There are some codes from online resources for reference in the directory of _example_
