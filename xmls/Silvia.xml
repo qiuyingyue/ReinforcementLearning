@@ -48,7 +48,7 @@
 
     <body name="torso" pos="0 0 0.75">
       <camera name="track" mode="trackcom" pos="0 -3 0.3" xyaxes="1 0 0 0 0 1"/>
-      <inertial pos="-1.04106e-10 -0.000333377 -0.0356225" quat="-4.96459e-05 0.707107 -6.11763e-05 0.707107" mass="1.94003" diaginertia="0.0628118 0.0329645 0.032962" />
+      <inertial pos="-1.04106e-10 -0.000333377 -0.0356225" quat="-4.96459e-05 0.707107 -6.11763e-05 0.707107" mass="6.94003" diaginertia="0.0628118 0.0329645 0.032962" />
       <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="torso" />
       <joint armature="0" damping="0" limited="false" margin="0.01" name="root" pos="0 0 0" type="free"/>
 

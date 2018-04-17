@@ -75,6 +75,7 @@ def run_six_leg(rl_agent):
             observation_, reward, done, info = env.step(action)
    
             qpos = env.get_actuator_pos()
+            print(qpos[:])
             print("                                    ")
             #print('------------ leg 1 ----------------')
             print("[[%.2f, %.2f, %.2f]," % (qpos[7]/np.pi*180, qpos[8]/np.pi*180, qpos[9]/np.pi*180))
@@ -103,15 +104,15 @@ def run_six_leg(rl_agent):
             observation = observation_
 
             # break while loop when end of this episode
-            #if done or step % 5000 == 0:
+            if done or step % 5000 == 0:
 
-            #    if plot:
-            #       d.close()
-            #       d.__init__()
-            #       iteration = 1
+                if plot:
+                   d.close()
+                   d.__init__()
+                   iteration = 1
 
-            #    env.reset()
-            #step += 1
+                env.reset()
+            step += 1
 
             if (step % 300 == 0):
                 print("reward:",reward, "info:", info)
