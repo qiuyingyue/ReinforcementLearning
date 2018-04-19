@@ -1,15 +1,18 @@
 <mujoco model="Silvia_simple">
   <compiler angle="degree" coordinate="local" inertiafromgeom="true" meshdir="../meshes_collision/"/>
-  <option gravity="0 0 -9.81"  integrator="RK4" timestep="0.01" o_solref="0.02 0.7"/>
-  <size njmax="500" nconmax="100" nstack="300000" />
+  <option gravity="0 0 -9.81"  integrator="RK4" timestep="0.02" o_solref="0.02 1.2"/>
+  <option>
+    <flag override = "enable"/>
+  </option>
+  <size njmax="500" nconmax="100" nstack="300000"/>
 
   <!--custom>
     <numeric data="0.0 0.0 0.55 1.0 0.0 0.0 0.0 0.0 1.0 0.0 -1.0 0.0 -1.0 0.0 1.0" name="init_qpos"/>
   </custom-->
 
   <default>
-    <joint armature="1" damping="5" stiffness="10" limited="true"/>
-    <geom conaffinity="0" condim="3" density="1" friction="0.8 1.2 0" margin="0.01" rgba="0.8 0.6 0.4 1"/>
+    <joint armature="1" limited="true"/>
+    <geom conaffinity="0" condim="3" density="1" friction="1.5 1.2 0" margin="0.01" rgba="0.8 0.6 0.4 1"/>
   </default>
 
   <asset>
@@ -47,7 +50,7 @@
             <camera name="track" mode="trackcom" pos="0 -3 0.3" xyaxes="1 0 0 0 0 1"/>
             <inertial pos="0 -0.000333377 -0.0356225" quat="-4.96459e-05 0.707107 -6.11763e-05 0.707107" mass="6.94003" diaginertia="0.0628118 0.0329645 0.032962" />
             <geom type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="torso" />
-            <joint armature="0" damping="0" limited="false" margin="0.01" name="root" pos="0 0 0" type="free"/>
+            <joint armature="0" damping="0" limited="false" margin="0.01" name="root" pos="0 0 0" type="free" />
 
             <body name="RF_Coxa" pos="0.1104 0.19121 -0.0411" quat="0.866025 0 0 0.500001">
                 <inertial pos="0.0285 0 0" mass="0.06196" diaginertia="8.8248e-05 6.265e-05 6.265e-05" />
@@ -148,7 +151,7 @@
 
     </worldbody>
 
-  <actuator>
+  <!--actuator>
     <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RF_Coxa" gear="150"/>
     <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RF_Femur" gear="150"/>
     <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="RF_Tibia" gear="150"/>
@@ -167,5 +170,61 @@
     <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LF_Coxa" gear="150"/>
     <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LF_Femur" gear="150"/>
     <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="LF_Tibia" gear="150"/>
+  </actuator-->
+
+  <!--actuator>
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RF_Coxa" gear="1" kp="20"/>
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RF_Femur" gear="1" kp="20"/>
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RF_Tibia" gear="1" kp="20"/>
+
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RM_Coxa" gear="1" kp="20"/>
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RM_Femur" gear="1" kp="20"/>
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RM_Tibia" gear="1" kp="20"/>
+
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RR_Coxa" gear="1" kp="20"/>
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RR_Femur" gear="1" kp="20"/>
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RR_Tibia" gear="1" kp="20"/>
+    
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LR_Coxa" gear="1" kp="20"/>
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LR_Femur" gear="1" kp="20"/>
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LR_Tibia" gear="1" kp="20"/> 
+   
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LM_Coxa" gear="1" kp="20"/>
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LM_Femur" gear="1" kp="20"/>
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LM_Tibia" gear="1" kp="20"/> 
+   
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LF_Coxa" gear="1" kp="20"/>
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LF_Femur" gear="1" kp="20"/>
+    <position ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LF_Tibia" gear="1" kp="20"/>
+  </actuator-->
+
+  <actuator>
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RF_Coxa" gear="1" gaintype="fixed" gainprm="600" biastype="affine" biasprm="0 -20 -12"/>
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RF_Femur" gear="1" gaintype="fixed" gainprm="600" biastype="affine" biasprm="1000 -20 -12"/>
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RF_Tibia" gear="1" gaintype="fixed" gainprm="500" biastype="affine" biasprm="-500 -20 -12"/>
+    <!-- coxa motor: 60=30*20 
+         femur motor: 600=30*20, 1000=50*20
+         tibia motor: 500=25*20, -500=-25*20 -->
+
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RM_Coxa" gear="1" gaintype="fixed" gainprm="600" biastype="affine" biasprm="0 -20 -12"/>
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RM_Femur" gear="1" gaintype="fixed" gainprm="600" biastype="affine" biasprm="1000 -20 -12"/>
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RM_Tibia" gear="1" gaintype="fixed" gainprm="500" biastype="affine" biasprm="-500 -20 -12"/>
+
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RR_Coxa" gear="1" gaintype="fixed" gainprm="600" biastype="affine" biasprm="0 -20 -12"/>
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RR_Femur" gear="1" gaintype="fixed" gainprm="600" biastype="affine" biasprm="1000 -20 -12"/>
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RR_Tibia" gear="1" gaintype="fixed" gainprm="500" biastype="affine" biasprm="-500 -20 -12"/>
+    
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LR_Coxa" gear="1" gaintype="fixed" gainprm="600" biastype="affine" biasprm="0 -20 -12"/>
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LR_Femur" gear="1" gaintype="fixed" gainprm="600" biastype="affine" biasprm="1000 -20 -12"/>
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LR_Tibia" gear="1" gaintype="fixed" gainprm="500" biastype="affine" biasprm="-500 -20 -12"/> 
+   
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LM_Coxa" gear="1" gaintype="fixed" gainprm="600" biastype="affine" biasprm="0 -20 -12"/>
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LM_Femur" gear="1" gaintype="fixed" gainprm="600" biastype="affine" biasprm="1000 -20 -12"/>
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LM_Tibia" gear="1" gaintype="fixed" gainprm="500" biastype="affine" biasprm="-500 -20 -12"/> 
+   
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LF_Coxa" gear="1" gaintype="fixed" gainprm="600" biastype="affine" biasprm="0 -20 -12"/>
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LF_Femur" gear="1" gaintype="fixed" gainprm="600" biastype="affine" biasprm="1000 -20 -12"/>
+    <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="LF_Tibia" gear="1" gaintype="fixed" gainprm="500" biastype="affine" biasprm="-500 -20 -12"/>
   </actuator>
+
 </mujoco>

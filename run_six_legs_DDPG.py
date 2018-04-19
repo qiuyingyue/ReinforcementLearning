@@ -70,13 +70,15 @@ def run_six_leg(rl_agent):
             env.render()
             # RL choose action based on observation
             action = rl_agent.choose_action(observation)
-
+            print('-----------  action begin  ------------')
+            print(action)
+            print('-----------  action end  ------------')
             # RL take action and get next observation and reward
             observation_, reward, done, info = env.step(action)
    
             qpos = env.get_actuator_pos()
             print(qpos[:])
-            print("                                    ")
+            print("-----------  leg position begin  ------------")
             #print('------------ leg 1 ----------------')
             print("[[%.2f, %.2f, %.2f]," % (qpos[7]/np.pi*180, qpos[8]/np.pi*180, qpos[9]/np.pi*180))
             #print('------------ leg 2 ----------------')
@@ -89,6 +91,7 @@ def run_six_leg(rl_agent):
             print("[%.2f, %.2f, %.2f]," % (qpos[19]/np.pi*180, qpos[20]/np.pi*180, qpos[21]/np.pi*180))
             #print('------------ leg 6 ----------------')
             print("[%.2f, %.2f, %.2f]]," % (qpos[22]/np.pi*180, qpos[23]/np.pi*180, qpos[24]/np.pi*180))
+            print("-----------  leg position end  ------------")
 
             if plot:
                # Plot reward here
@@ -104,14 +107,16 @@ def run_six_leg(rl_agent):
             observation = observation_
 
             # break while loop when end of this episode
-            if done or step % 5000 == 0:
+            # Note this part is disabled since it cause constantly quitting with error -> need to fix the 'done' judgement
+            #if done or step % 5000 == 0:
 
-                if plot:
-                   d.close()
-                   d.__init__()
-                   iteration = 1
+            #    if plot:
+            #       d.close()
+            #       d.__init__()
+            #       iteration = 1
 
-                env.reset()
+            #    env.reset()
+
             step += 1
 
             if (step % 300 == 0):
