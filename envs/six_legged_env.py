@@ -13,7 +13,8 @@ class SixLeggedEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         #xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/six-legged.xml"
         #xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/six-legged_15dof.xml"
         #xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/Silvia.xml"
-        xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/simple_Silvia.xml"
+        #xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/simple_Silvia.xml"
+        xml_path = os.path.split(os.path.realpath(__file__))[0]+"/../xmls/simple_Silvia_for_HexaPy.xml"
 
         mujoco_env.MujocoEnv.__init__(self, xml_path, 5)
         utils.EzPickle.__init__(self)
