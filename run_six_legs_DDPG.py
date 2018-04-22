@@ -53,6 +53,7 @@ class DynamicPlot():
         plt.close(self.figure)
 
 def run_six_leg(rl_agent):
+
     step = 0
     qpos0 = env.get_actuator_pos0()
     print(qpos0[:])
