@@ -7,6 +7,7 @@ from DDPG_six_legged import DDPG
 from six_legged_env import SixLeggedEnv
 import matplotlib.pyplot as plt
 import numpy as np
+import pickle
 
 plot = 0   #Plot the learning curve?
 
@@ -52,13 +53,24 @@ class DynamicPlot():
     def close(self):
         plt.close(self.figure)
 
+# Pickle data and save file
+def save(args, obs_data, act_data):
+    print('Serializing training set ...')
+    #make a new file!
+    model_file = 'expertPolicy/' + args.name + str(args.rounds) + '.pkl'
+    fileObject = open(model_file, 'wb')
+    obj = {'obs': obs_data, 'act': act_data}
+    pickle.dump(obj, fileObject)
+    fileObject.close()
+    print('Serialized and saved!')
+
 def run_six_leg(rl_agent):
 
     step = 0
     qpos0 = env.get_actuator_pos0()
     print(qpos0[:])
 
-    for episode in range(100):
+    for episode in range(1):
         # initial observation
         observation = env.reset()
         
@@ -66,11 +78,11 @@ def run_six_leg(rl_agent):
            d = DynamicPlot()
            iteration = 1
 
+        count = 0
         while True:
             
             # fresh env
             env.render()
-
 
             # RL choose action based on observation
             action = expert[step][:]
@@ -80,8 +92,15 @@ def run_six_leg(rl_agent):
             print('-----------  action end  ------------')
             # RL take action and get next observation and reward
             for s in range(25):
-                observation_, reward, done, info = env.step(action)
-   
+                observation, reward, done, info = env.step(action)
+
+            print('-----------  observation begin  ------------')
+            print(observation)
+            print('-----------  observation end  ------------')
+
+            act_expert.append(action)  #The dimension of action is 18
+            obs_expert.append(observation.tolist())   #The dimension of observation is 167
+
             qpos = env.get_actuator_pos()
             print(qpos[:])
             print("-----------  leg position begin  ------------")
@@ -120,9 +139,20 @@ def run_six_leg(rl_agent):
             if (step == 8):
                 step = 0
 
+            count=count+1
+
+            if count==100:
+                break
+
     # end 
     print('over')
-    sys.exit()
+    #sys.exit()
+
+class fileName():
+
+    def __init__(self):
+        self.name = ''
+        self.rounds = 0
 
 if __name__ == "__main__":
     expert = [ \
@@ -166,6 +196,9 @@ if __name__ == "__main__":
          0.38209646, -0.3385682, 0.0283867, 0.31950387, -0.29026163,
          0.06442661, 0.37072305, -0.30841235]]
 
+    act_expert = []
+    obs_expert = []
+
     ###get environment
     #env = gym.make('Ant-v2')##HalfCheetah, Ant, Humanoid
     env = SixLeggedEnv()
@@ -188,4 +221,9 @@ if __name__ == "__main__":
     rl_agent = DDPG(action_dim, state_dim, a_bound = (-1, 1))
     #rl_agent.restore()
     #parse rl_agent to run the environment
+
     run_six_leg(rl_agent)
+    args = fileName()
+    args.name = 'Silvia_expert'
+    args.rounds = 100
+    save(args, obs_expert, act_expert)

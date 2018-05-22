@@ -1,3 +1,7 @@
+#Generate expert policy data in run_six_legs_pre_trajectory.py
+#Train the neuro-network in behavior_cloning.py
+#Run the neuro-network in this file
+
 import gym
 import sys
 sys.path.append("algs")
@@ -7,6 +11,8 @@ from DDPG_six_legged import DDPG
 from six_legged_env import SixLeggedEnv
 import matplotlib.pyplot as plt
 import numpy as np
+import pickle
+from keras.models import load_model
 
 plot = 0   #Plot the learning curve?
 
@@ -52,12 +58,26 @@ class DynamicPlot():
     def close(self):
         plt.close(self.figure)
 
+# Pickle data and save file
+def save(args, obs_data, act_data):
+    print('Serializing training set ...')
+    #make a new file!
+    model_file = 'expertPolicy/' + args.name + str(args.rounds) + '.pkl'
+    fileObject = open(model_file, 'wb')
+    obj = {'obs': obs_data, 'act': act_data}
+    pickle.dump(obj, fileObject)
+    fileObject.close()
+    print('Serialized and saved!')
+
 def run_six_leg(rl_agent):
 
     step = 0
     qpos0 = env.get_actuator_pos0()
     print(qpos0[:])
-    for episode in range(10):
+
+    model_h5 = load_model('expertPolicy/models/' + 'Silvia' + '.h5py')
+
+    for episode in range(1):
         # initial observation
         observation = env.reset()
         
@@ -65,18 +85,30 @@ def run_six_leg(rl_agent):
            d = DynamicPlot()
            iteration = 1
 
+        count = 0
         while True:
             
             # fresh env
             env.render()
+
             # RL choose action based on observation
-            action = rl_agent.choose_action(observation)
+            #action = expert[step][:]
+            action = (model_h5.predict(observation.reshape(1, len(observation)), batch_size=64, verbose=0))
+
             print('-----------  action begin  ------------')
             print(action)
             print('-----------  action end  ------------')
             # RL take action and get next observation and reward
-            observation_, reward, done, info = env.step(action)
-   
+            for s in range(25):
+                observation, reward, done, info = env.step(action)
+
+            print('-----------  observation begin  ------------')
+            print(observation)
+            print('-----------  observation end  ------------')
+
+            act_expert.append(action)
+            obs_expert.append(observation.tolist())   #The dimension of observation is 167
+
             qpos = env.get_actuator_pos()
             print(qpos[:])
             print("-----------  leg position begin  ------------")
@@ -99,13 +131,6 @@ def run_six_leg(rl_agent):
                d.update(iteration, reward)
                iteration = iteration+1
 
-            rl_agent.store_transition(observation, action, reward, observation_)
-
-            if (step > 200) and (step % 5 == 0):
-                rl_agent.learn()
-
-            # swap observation - observation is before and observation_ is after is taken
-            observation = observation_
 
             # break while loop when end of this episode
             # Note this part is disabled since it cause constantly quitting with error -> need to fix the 'done' judgement
@@ -119,17 +144,69 @@ def run_six_leg(rl_agent):
             #    env.reset()
 
             step += 1
+            if (step == 8):
+                step = 0
 
-            if (step % 300 == 0):
-                print("reward:",reward, "info:", info)
-            if (step % 2000 == 0):
-                rl_agent.save()
+            count=count+1
+
+            if count==100:
+                break
 
     # end 
     print('over')
-    sys.exit()
+    #sys.exit()
+
+class fileName():
+
+    def __init__(self):
+        self.name = ''
+        self.rounds = 0
 
 if __name__ == "__main__":
+    expert = [ \
+        [-0.12909389, 0.3230989, -0.3151643, 0.05632893, 0.31895516,
+         -0.28769827, 0.04774928, 0.31189033, -0.26120125, -0.12909389,
+         0.3230989, -0.3151643, 0.05632893, 0.31895516, -0.28769827,
+         0.04774928, 0.31189033, -0.26120125],
+
+        [-0.10478499, 0.38209646, -0.3385682, 0.0283867, 0.31950387,
+         -0.29026163, 0.06442661, 0.37072305, -0.30841235, -0.10478499,
+         0.32191046, -0.30392185, 0.0283867, 0.37657554, -0.3232424,
+         0.06442661, 0.31634586, -0.2768472],
+
+        [-0.08333333, 0.44055556, -0.35722222, -0.05632893, 0.31895516,
+         -0.28769827, 0.08333333, 0.44055556, -0.35722222, -0.04774928,
+         0.31189033, -0.26120125, 0., 0.44055556, -0.35722222,
+         0.12909389, 0.3230989, -0.3151643],
+
+        [-0.06442661, 0.37072305, -0.30841235, -0.08342262, 0.31798558,
+         -0.28344571, 0.10478499, 0.38209646, -0.3385682, -0.033006,
+         0.30633063, -0.24426278, -0.0283867, 0.37657554, -0.3232424,
+         0.15652619, 0.3233781, -0.32475787],
+
+        [-0.04774928, 0.31189033, -0.26120125, -0.10933571, 0.31652358,
+         -0.27753331, 0.12909389, 0.3230989, -0.3151643, -0.0199322,
+         0.29969919, -0.22609982, -0.05632893, 0.31895516, -0.28769827,
+         0.18723439, 0.32295912, -0.33263113],
+
+        [-0.06442661, 0.31634586, -0.2768472, -0.05632893, 0.37548604,
+         -0.32039295, 0.10478499, 0.32191046, -0.30392185, -0.04774928,
+         0.36350472, -0.29134229, -0.0283867, 0.31950387, -0.29026163,
+         0.12909389, 0.38618119, -0.35138642],
+
+        [-0.08333333, 0.31968091, -0.29111806, 0., 0.44055556,
+         -0.35722222, 0.08333333, 0.31968091, -0.29111806, -0.08333333,
+         0.44055556, -0.35722222, 0., 0.31968091, -0.29111806,
+         0.08333333, 0.44055556, -0.35722222],
+
+        [-0.10478499, 0.32191046, -0.30392185, 0.0283867, 0.37657554,
+         -0.3232424, 0.06442661, 0.31634586, -0.2768472, -0.10478499,
+         0.38209646, -0.3385682, 0.0283867, 0.31950387, -0.29026163,
+         0.06442661, 0.37072305, -0.30841235]]
+
+    act_expert = []
+    obs_expert = []
+
     ###get environment
     #env = gym.make('Ant-v2')##HalfCheetah, Ant, Humanoid
     env = SixLeggedEnv()
@@ -153,3 +230,7 @@ if __name__ == "__main__":
     #rl_agent.restore()
     #parse rl_agent to run the environment
     run_six_leg(rl_agent)
+    args = fileName()
+    args.name = 'Silvia_expert'
+    args.rounds = 100
+    save(args, obs_expert, act_expert)
