@@ -1,3 +1,8 @@
+#A part of behavior cloning framework
+#Generate expert policy data in run_six_legs_pre_trajectory.py
+#Train the neuro-network in behavior_cloning.py
+#Run the neuro-network in run_six_legs_behavior_clone.py
+
 import gym
 import sys
 sys.path.append("algs")
@@ -91,15 +96,13 @@ def run_six_leg(rl_agent):
             print(action)
             print('-----------  action end  ------------')
             # RL take action and get next observation and reward
-            for s in range(25):
+            for s in range(1):  #This sub-steps has bad effect on training
                 observation, reward, done, info = env.step(action)
-
-            print('-----------  observation begin  ------------')
-            print(observation)
-            print('-----------  observation end  ------------')
-
-            act_expert.append(action)  #The dimension of action is 18
-            obs_expert.append(observation.tolist())   #The dimension of observation is 167
+                print('-----------  observation begin  ------------')
+                print(observation)
+                print('-----------  observation end  ------------')
+                act_expert.append(action)  #The dimension of action is 18
+                obs_expert.append(observation.tolist())   #The dimension of observation is 167
 
             qpos = env.get_actuator_pos()
             print(qpos[:])

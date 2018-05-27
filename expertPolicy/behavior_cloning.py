@@ -1,3 +1,8 @@
+#A part of behavior cloning framework
+#Generate expert policy data in run_six_legs_pre_trajectory.py
+#Train the neuro-network in behavior_cloning.py
+#Run the neuro-network in run_six_legs_behavior_clone.py
+
 import pickle
 import tensorflow as tf
 import numpy as np
@@ -16,7 +21,7 @@ def simple_nn(obs_size, act_size):
     model.add(Dense(128, activation='relu'))
     model.add(Dense(128, activation='relu'))
     model.add(Dense(act_size, activation='linear'))
-    model.compile(loss='mean_squared_error', optimizer='sgd', metrics=['accuracy'])
+    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy'])
     return model
 
 if __name__ == '__main__':
@@ -39,5 +44,5 @@ if __name__ == '__main__':
 
     obs_train, obs_test, act_train, act_test = train_test_split(obs, act, test_size=0.2, random_state=245323)
     model = simple_nn(obs_length, act_length)
-    model.fit(obs_train, act_train, batch_size=64, epochs=1, verbose=1)
+    model.fit(obs_train, act_train, batch_size=64, epochs=50, verbose=1)
     model.save('models/' + 'Silvia' + '.h5py')

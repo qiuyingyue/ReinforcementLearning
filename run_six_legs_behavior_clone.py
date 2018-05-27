@@ -1,6 +1,7 @@
+#A part of behavior cloning framework
 #Generate expert policy data in run_six_legs_pre_trajectory.py
 #Train the neuro-network in behavior_cloning.py
-#Run the neuro-network in this file
+#Run the neuro-network in run_six_legs_behavior_clone.py
 
 import gym
 import sys
@@ -75,6 +76,7 @@ def run_six_leg(rl_agent):
     qpos0 = env.get_actuator_pos0()
     print(qpos0[:])
 
+    #model_h5 = load_model('expertPolicy/models/BC/' + 'Hex_Master_150' + '.h5py')
     model_h5 = load_model('expertPolicy/models/' + 'Silvia' + '.h5py')
 
     for episode in range(1):
@@ -93,13 +95,14 @@ def run_six_leg(rl_agent):
 
             # RL choose action based on observation
             #action = expert[step][:]
-            action = (model_h5.predict(observation.reshape(1, len(observation)), batch_size=64, verbose=0))
-
-            print('-----------  action begin  ------------')
-            print(action)
-            print('-----------  action end  ------------')
+            
             # RL take action and get next observation and reward
-            for s in range(25):
+            for s in range(1):   #This sub-steps has bad effect on training
+                action = (model_h5.predict(observation.reshape(1, len(observation)), batch_size=64, verbose=0))
+
+                print('-----------  action begin  ------------')
+                print(action)
+                print('-----------  action end  ------------')
                 observation, reward, done, info = env.step(action)
 
             print('-----------  observation begin  ------------')
