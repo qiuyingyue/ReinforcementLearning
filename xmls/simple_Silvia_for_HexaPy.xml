@@ -199,6 +199,9 @@
   </actuator-->
 
   <actuator>
+
+    <!-- The general formula: scalar_force = gainprm*(ctrl) + biasprm[0] + biasprm[1]*theta + biasprm[2]*dtheta/dt 
+         = 20*(3.14*u-theta) -12*dtheta/dt -->
     <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RF_Coxa" gear="1" gaintype="fixed" gainprm="62.8" biastype="affine" biasprm="0 -20 -12"/>
     <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RF_Femur" gear="1" gaintype="fixed" gainprm="62.8" biastype="affine" biasprm="0 -20 -12"/>
     <general ctrllimited="true" ctrlrange="-1 1" forcelimited="true" forcerange="-20.0 20.0" joint="RF_Tibia" gear="1" gaintype="fixed" gainprm="62.8" biastype="affine" biasprm="0 -20 -12"/>
